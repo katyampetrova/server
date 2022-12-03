@@ -14,6 +14,7 @@ start();
 
 async function start() {
     // await mongoose.connect(connectionString);
+    
     await mongoose.connect(process.env.DATABASE_URL || connectionString);
     console.log('Database connected');
 
