@@ -7,6 +7,7 @@ const itemSchema = new Schema({
     price: { type: Number, required: true, min: [0.01, 'Price must be a positive number'] },
     img: { type: String, required: [true, 'Image URL is required'] },
     tel: { type: Number, required: [true, 'Contact phone number is required'] },
+    city: { type: String, required: [true, 'City is required'] },
     _ownerId: { type: ObjectId, ref: 'User', required: true }
 });
 

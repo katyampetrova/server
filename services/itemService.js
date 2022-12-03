@@ -25,6 +25,7 @@ async function update(id, item) {
     existing.price = item.price;
     existing.tel = item.tel;
     existing.img = item.img;
+    existing.city = item.city;
 
     return existing.save();
 }
