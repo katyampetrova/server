@@ -14,8 +14,8 @@ start();
 
 async function start() {
     // await mongoose.connect(connectionString);
-    
-    await mongoose.connect(process.env.DATABASE_URL || connectionString);
+
+    mongoose.connect(process.env.DATABASE_URL || connectionString);
     console.log('Database connected');
 
     const app = express();
@@ -26,7 +26,13 @@ async function start() {
     app.use(session());
 
     app.get('/', (req, res) => {
-        res.json({ message: 'REST service operational' });
+        try {
+            res.json({ message: 'REST service operational' });
+        } catch (e) {
+            res.status(500).json({
+                message: e,
+             });
+        }
     });
 
     app.use('/users', authController);
