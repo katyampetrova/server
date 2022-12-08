@@ -1,7 +1,11 @@
 const Item = require('../models/Item');
 
 
-async function getAll() {
+async function getAll(limit) {
+    // .limit(3)
+    if (limit) {
+        return Item.find({}).limit(limit);
+    }
     return Item.find({});
 }
 

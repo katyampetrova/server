@@ -10,7 +10,10 @@ dataController.get('/', async (req, res) => {
     if (req.query.where) {
         const userId = JSON.parse(req.query.where.split('=')[1]);
         items = await getByUserId(userId);
-    } else {
+    } else if (req.query.limit) {
+        items = await getAll(req.query.limit);
+    } 
+    else {
         items = await getAll();
     }
     res.json(items);
@@ -19,6 +22,7 @@ dataController.get('/', async (req, res) => {
 dataController.post('/', hasUser(), async (req, res) => {
     try {
         const data = Object.assign({ _ownerId: req.user._id }, req.body);
+        // const data = Object.assign(req.body);
         const item = await create(data);
         res.json(item);
     } catch (err) {
