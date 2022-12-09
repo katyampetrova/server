@@ -1,7 +1,6 @@
 const authController = require('express').Router();
 const { body, validationResult } = require('express-validator');
-
-const { register, login, logout } = require('../services/userService');
+const { register, login, logout, getProfileInfo } = require('../services/userService');
 const { parseError } = require('../util/parser');
 
 
@@ -16,6 +15,13 @@ authController.post('/register',
             }
 
             const token = await register(req.body.email, req.body.password);
+
+            if (process.env.NODE_ENV === 'production') {
+                res.cookie('accessToken', token.accessToken, { httpOnly: true, sameSite: 'none', secure: true });
+            } else {
+                res.cookie('accessToken', token.accessToken, { httpOnly: true });
+            }
+
             res.json(token);
         } catch (error) {
             const message = parseError(error);
@@ -26,6 +32,13 @@ authController.post('/register',
 authController.post('/login', async (req, res) => {
     try {
         const token = await login(req.body.email, req.body.password);
+
+        if (process.env.NODE_ENV === 'production') {
+            res.cookie('accessToken', token.accessToken, { httpOnly: true, sameSite: 'none', secure: true });
+        } else {
+            res.cookie('accessToken', token.accessToken, { httpOnly: true });
+        }
+        
         res.json(token);
     } catch (error) {
         const message = parseError(error);
@@ -38,5 +51,7 @@ authController.get('/logout', async (req, res) => {
     await logout(token);
     res.status(204).end();
 });
+
+authController.get('/profile', getProfileInfo);
 
 module.exports = authController;

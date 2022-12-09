@@ -1,11 +1,12 @@
 const express = require('express');
 const mongoose = require('mongoose');
 
-const cors = require('./middlewares/cors');
+// const cors = require('./middlewares/cors');
 const authController = require('./controllers/authController');
 const dataController = require('./controllers/dataController');
 const trimBody = require('./middlewares/trimBody');
 const session = require('./middlewares/session');
+const cors = require('cors');
 
 
 const connectionString = 'mongodb://localhost:27017/store';
@@ -21,7 +22,12 @@ async function start() {
     const app = express();
 
     app.use(express.json());
-    app.use(cors());
+    // app.use(cors());
+    app.use(cors({
+        origin: ['http://localhost:4200'],
+        credentials: true
+    }));
+  
     app.use(trimBody());
     app.use(session());
 

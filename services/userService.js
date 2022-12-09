@@ -32,6 +32,8 @@ async function login(email, password) {
         throw new Error('Incorrect email or password');
     }
 
+    // console.log(user);
+
     return createToken(user);
 }
 
@@ -60,9 +62,19 @@ function parseToken(token) {
     return jwt.verify(token, secret);
 }
 
+function getProfileInfo(req, res, next) {
+    console.log(req.user);
+    const { _id: userId } = req.user;
+
+    User.findOne({ _id: userId }, { hashedPassword: 0, __v: 0 })
+        .then(user => { res.status(200).json(user) })
+        .catch(next);
+}
+
 module.exports = {
     register,
     login,
     logout,
-    parseToken
+    parseToken,
+    getProfileInfo
 };
