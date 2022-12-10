@@ -24,7 +24,7 @@ async function start() {
     app.use(express.json());
     // app.use(cors());
     app.use(cors({
-        origin: ['http://localhost:4200, https://store-qt00.onrender.com/'],
+        origin: ['http://localhost:4200, https://store-qt00.onrender.com'],
         credentials: true
     }));
   
