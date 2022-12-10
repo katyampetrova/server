@@ -63,12 +63,14 @@ function parseToken(token) {
 }
 
 function getProfileInfo(req, res, next) {
-    console.log(req.user);
-    const { _id: userId } = req.user;
+    if(req.user) {
+        const { _id: userId } = req.user;
 
-    User.findOne({ _id: userId }, { hashedPassword: 0, __v: 0 })
-        .then(user => { res.status(200).json(user) })
-        .catch(next);
+        User.findOne({ _id: userId }, { hashedPassword: 0, __v: 0 })
+            .then(user => { res.status(200).json(user) })
+            .catch(next);
+    }
+   
 }
 
 module.exports = {

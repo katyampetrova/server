@@ -29,7 +29,7 @@ async function start() {
     }));
   
     app.use(trimBody());
-    app.use(session());
+    // app.use(session());
 
     app.get('/', (req, res) => {
         res.json({ message: 'REST service operational' });

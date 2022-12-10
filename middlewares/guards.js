@@ -1,5 +1,12 @@
+const { parseToken } = require('../services/userService');
+
 function hasUser() {
     return (req, res, next) => {
+        const token = req.headers.cookie?.replace('accessToken=', '');
+        const payload = parseToken(token);
+        req.user = payload;
+        req.token = token;
+
         if (req.user) {
             next();
         } else {

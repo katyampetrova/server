@@ -1,5 +1,6 @@
 const authController = require('express').Router();
 const { body, validationResult } = require('express-validator');
+const session = require('../middlewares/session');
 const { register, login, logout, getProfileInfo } = require('../services/userService');
 const { parseError } = require('../util/parser');
 
@@ -32,7 +33,7 @@ authController.post('/register',
 authController.post('/login', async (req, res) => {
     try {
         const token = await login(req.body.email, req.body.password);
-
+        console.log(token);
         if (process.env.NODE_ENV === 'production') {
             res.cookie('accessToken', token.accessToken, { httpOnly: true, sameSite: 'none', secure: true });
         } else {
@@ -41,17 +42,20 @@ authController.post('/login', async (req, res) => {
         
         res.json(token);
     } catch (error) {
+        console.log(error);
         const message = parseError(error);
         res.status(401).json({ message });
     }
 });
 
 authController.get('/logout', async (req, res) => {
-    const token = req.token;
+    // const token = req.token;
+    const token = req.headers.cookie?.replace('accessToken=', '')
+    console.log(req.headers.cookie?.replace('accessToken=', ''));
     await logout(token);
     res.status(204).end();
 });
 
-authController.get('/profile', getProfileInfo);
+authController.get('/profile', session(), getProfileInfo);
 
 module.exports = authController;
