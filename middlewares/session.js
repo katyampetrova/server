@@ -6,6 +6,8 @@ module.exports = () => (req, res, next) => {
     // console.log(req.headers.cookie.replace('accessToken=', ''));
 
     const token = req.headers.cookie?.replace('accessToken=', '');
+    console.log(req.headers);
+    console.log(token);
     if (token) {
         try {
             const payload = parseToken(token);
