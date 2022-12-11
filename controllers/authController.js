@@ -33,7 +33,7 @@ authController.post('/register',
 authController.post('/login', async (req, res) => {
     try {
         const token = await login(req.body.email, req.body.password);
-        console.log(token);
+        // console.log(token);
         if (process.env.NODE_ENV === 'production') {
             res.cookie('accessToken', token.accessToken, { httpOnly: true, sameSite: 'none', secure: true });
         } else {
@@ -42,7 +42,7 @@ authController.post('/login', async (req, res) => {
         
         res.json(token);
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         const message = parseError(error);
         res.status(401).json({ message });
     }
@@ -51,7 +51,7 @@ authController.post('/login', async (req, res) => {
 authController.get('/logout', async (req, res) => {
     // const token = req.token;
     const token = req.headers.cookie?.replace('accessToken=', '')
-    console.log(req.headers.cookie?.replace('accessToken=', ''));
+    // console.log(req.headers.cookie?.replace('accessToken=', ''));
     await logout(token);
     res.status(204).end();
 });

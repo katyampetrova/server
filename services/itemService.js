@@ -4,9 +4,9 @@ const Item = require('../models/Item');
 async function getAll(limit) {
     // .limit(3)
     if (limit) {
-        return Item.find({}).limit(limit);
+        return Item.find({}).limit(limit).sort({_id:-1});
     }
-    return Item.find({});
+    return Item.find({}).sort({_id:-1});
 }
 
 async function getByUserId(userId) {

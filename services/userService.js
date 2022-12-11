@@ -10,7 +10,7 @@ const tokenBlacklist = new Set();
 async function register(email, password) {
     const existing = await User.findOne({ email }).collation({ locale: 'en', strength: 2 });
     if (existing) {
-        throw new Error('Email is taken');
+        throw new Error('Имейл адреса е зает');
     }
 
     const user = await User.create({
@@ -24,12 +24,12 @@ async function register(email, password) {
 async function login(email, password) {
     const user = await User.findOne({ email }).collation({ locale: 'en', strength: 2 });
     if (!user) {
-        throw new Error('Incorrect email or password');
+        throw new Error('Невалиден имейл или парола');
     }
 
     const match = await bcrypt.compare(password, user.hashedPassword);
     if (!match) {
-        throw new Error('Incorrect email or password');
+        throw new Error('Невалиден имейл или парола');
     }
 
     // console.log(user);

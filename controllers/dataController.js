@@ -7,8 +7,10 @@ const { parseError } = require('../util/parser');
 
 dataController.get('/', async (req, res) => {
     let items = [];
-    if (req.query.where) {
-        const userId = JSON.parse(req.query.where.split('=')[1]);
+  
+    if (req.query.userId) {
+        // const userId = JSON.parse(req.query.where.split('=')[1]);
+        const userId = req.query.userId;
         items = await getByUserId(userId);
     } else if (req.query.limit) {
         items = await getAll(req.query.limit);
