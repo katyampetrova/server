@@ -14,6 +14,7 @@ module.exports = () => (req, res, next) => {
             req.user = payload;
             req.token = token;
         } catch (err) {
+            res.cookie('accessToken', '000000', { httpOnly: true });
             return res.status(401).json({ message: 'Invalid authorization token'});
         }
     } else {
